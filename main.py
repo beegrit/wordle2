@@ -1,10 +1,5 @@
 from primenums import *
-
-
-
-
-
-
+from rankwords import *
 
 def matchWords(target,guess):
     target = list(target)
@@ -70,12 +65,25 @@ def main():
     all_nums = []
     greys = []
     target = "water"
-    guess = "crane"
-    g = makeGuess([num,all_nums,greys],target,guess)
-    g = makeGuess(g[:3],target,"saker")
-    g = makeGuess(g[:3],target,"wader")
+    correct = False
+    info = [num,all_nums,greys,guesslist]
+    guessCount = 0
+    previousGuesses = []
+
+    while correct != True:
+        if len(info[3]) < 10:
+            guess = bestPossibleChoice(info[3])[0]
+        else:
+            guess = mostInfo(previousGuesses)
+        print(guess)
+        info = makeGuess(info[:3],target,guess)
+        guessCount += 1
+
+        if guess == target:
+            correct = True
+            print(f"Took {guessCount} guesses to get {target}")
+        previousGuesses.append(guess)
+            
     
-    print((g[3]))
-
-
+    
 main()
