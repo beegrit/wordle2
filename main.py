@@ -57,24 +57,21 @@ def makeGuess(important,target,guess,):
     possibleWords = findPossible(update_results[0],update_results[2])
     
     return update_results[0],update_results[1],update_results[2],possibleWords
-    
-    
-    
-def main():
+
+def attemptWord(target):
     num = 1
     all_nums = []
     greys = []
-    target = "water"
     correct = False
     info = [num,all_nums,greys,guesslist]
     guessCount = 0
     previousGuesses = []
 
     while correct != True:
-        if len(info[3]) < 10:
+        if len(info[3]) < 50:
             guess = bestPossibleChoice(info[3])[0]
         else:
-            guess = mostInfo(previousGuesses)
+            guess = mostInfo(previousGuesses,info[3])
         print(guess)
         info = makeGuess(info[:3],target,guess)
         guessCount += 1
@@ -83,6 +80,10 @@ def main():
             correct = True
             print(f"Took {guessCount} guesses to get {target}")
         previousGuesses.append(guess)
+    
+    
+def main():
+    attemptWord('crane')
             
     
     

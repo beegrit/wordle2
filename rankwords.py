@@ -1,36 +1,40 @@
 from guesslist import guesslist
+def findCommonLetters(guessable):
+    commonLetters = [{},{},{},{},{},]
 
-commonLetters = [{},{},{},{},{},]
+    for word in guessable:
+        for i,letter in enumerate(word):
+            if letter in commonLetters[i]:
+                commonLetters[i][letter] += 1
+            else:
+                commonLetters[i][letter] = 1
 
-for word in guesslist:
-    for i,letter in enumerate(word):
-        if letter in commonLetters[i]:
-            commonLetters[i][letter] += 1
-        else:
-            commonLetters[i][letter] = 1
-
-mostCommonLettersBySpace = []
-for i in commonLetters:
-    federalism = sorted(i.items(),key=lambda x:x[1],reverse=True)
-    tempCommonLetters = [x[0] for x in federalism]
-    mostCommonLettersBySpace.append(tempCommonLetters)
+    mostCommonLettersBySpace = []
+    for i in commonLetters:
+        federalism = sorted(i.items(),key=lambda x:x[1],reverse=True)
+        tempCommonLetters = [x[0] for x in federalism]
+        mostCommonLettersBySpace.append(tempCommonLetters)
+    return mostCommonLettersBySpace
 
 
-def wordScore(word):
+def wordScore(word,commonLetters):
     score = 1
     for i,let in enumerate(word):
-        score *= (mostCommonLettersBySpace[i].index(let)+1)
+        if let in commonLetters[i]:
+            score *= (commonLetters[i].index(let)+1)
+        else: 
+            score *= 1000
     score *= 4**(5-len(set(word)))
     return score
 
 
-def bestPossibleChoice(possible):
+def bestPossibleChoice(possible,commonLetters=findCommonLetters(guesslist)):
     wordScores = {}
     for choice in possible:
-        wordScores[choice] = wordScore(choice)
+        wordScores[choice] = wordScore(choice,commonLetters)
     bestGuesses = sorted(wordScores.items(),key=lambda x:x[1])
     return bestGuesses[0]
-def mostInfo(alreadyGuessed):
+def mostInfo(alreadyGuessed,possible):
     lettersGuessed = "".join(alreadyGuessed)
     lettersGuessed = set(i for i in lettersGuessed)
 
@@ -42,6 +46,6 @@ def mostInfo(alreadyGuessed):
         else:
             noGreyGuess.append(word)
 
-    return bestPossibleChoice(noGreyGuess)[0]
+    return bestPossibleChoice(noGreyGuess,findCommonLetters(possible))[0]
 
     
