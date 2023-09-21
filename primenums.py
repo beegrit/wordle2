@@ -39,7 +39,3 @@ for word in guesslist:
   
   wordnum[pword] = word
 
-
-print(list(wordnum.keys())[6])
-
-print(2667904498589214023277448036002063593231576449590701051589637%989491)
