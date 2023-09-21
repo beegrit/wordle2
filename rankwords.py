@@ -17,13 +17,33 @@ def findCommonLetters(guessable):
     return mostCommonLettersBySpace
 
 
-def wordScore(word,commonLetters):
+def wordScore(word,commonLetters,possible):
     score = 1
+    letter_ratio = 100
+    if len(possible)<30:
+        possible_letters_repeat = "".join(possible)
+        possible_letters = set(possible_letters_repeat)
+        letter_ratio = len(possible)/len(possible_letters)
+    
+    helpful_letters = []
+    if letter_ratio <= .7:
+        commonLetters = findCommonLetters(guesslist)
+        possible = guesslist
+        for letter in possible_letters:
+            if [*possible_letters_repeat].count(letter) <= 2:
+                helpful_letters.append(letter)
+    
     for i,let in enumerate(word):
         if let in commonLetters[i]:
-            score *= (commonLetters[i].index(let)+1)
+            if let not in helpful_letters:
+                score *= (commonLetters[i].index(let)+1)
+            else:
+                score *= .5
         else: 
-            score *= 1000
+            if len(helpful_letters) > 0:
+                score*=2
+            else:
+                score *= 10
     score *= 4**(5-len(set(word)))
     return score
 
@@ -31,8 +51,12 @@ def wordScore(word,commonLetters):
 def bestPossibleChoice(possible,commonLetters=findCommonLetters(guesslist)):
     wordScores = {}
     for choice in possible:
-        wordScores[choice] = wordScore(choice,commonLetters)
+        wordScores[choice] = wordScore(choice,commonLetters,possible)
     bestGuesses = sorted(wordScores.items(),key=lambda x:x[1])
+    
+    
+    
+    
     return bestGuesses[0]
 def mostInfo(alreadyGuessed,possible):
     lettersGuessed = "".join(alreadyGuessed)
