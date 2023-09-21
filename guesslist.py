@@ -5,6 +5,7 @@ guesslist = [
 "cuppa",
 "cohoe",
 "gurks",
+"balls",
 "squad",
 "beisa",
 "shrug",

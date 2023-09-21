@@ -38,3 +38,4 @@ for word in guesslist:
         pword *= numlet[let]["yellow"][x]
   
   wordnum[pword] = word
+

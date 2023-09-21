@@ -45,7 +45,9 @@ def mostInfo(alreadyGuessed,possible):
             continue
         else:
             noGreyGuess.append(word)
-
-    return bestPossibleChoice(noGreyGuess,findCommonLetters(possible))[0]
+    if len(noGreyGuess)>0:
+        return bestPossibleChoice(noGreyGuess,findCommonLetters(possible))[0]
+    else:
+        return bestPossibleChoice(possible,findCommonLetters(possible))[0]
 
     

@@ -35,7 +35,7 @@ def updateNum(num,all_nums,greys,mask,target,guess):
                 all_nums.append(temp_num)
                 num*= temp_num
         elif mask[i] == 'x':
-            greys.append(guess[i])
+            greys[i].append(guess[i])
     return num,all_nums,greys
     
 def findPossible(num,greys):
@@ -43,14 +43,17 @@ def findPossible(num,greys):
     for id in list(wordnum.keys()):
         if id%num == 0:
             bad = False
-            for p in greys:
-                if p in wordnum[id]:
-                    bad = True
+            for i in range(5):
+                if bad == True: break
+                for p in greys[i]:
+                    if p == wordnum[id][i]:
+                        bad = True  
+                        break
             if bad == False:      
                 possibleWords.append(wordnum[id])
     return possibleWords
 
-def makeGuess(important,target,guess,):
+def makeGuess(important,target,guess):
     num,all_nums,greys = important[0], important[1], important[2]
     mask = matchWords(target,guess)
     update_results = updateNum(num,all_nums,greys,mask,target,guess)
@@ -61,21 +64,27 @@ def makeGuess(important,target,guess,):
 def attemptWord(target):
     num = 1
     all_nums = []
-    greys = []
+    greys = [[] for x in range(5)]
     correct = False
     info = [num,all_nums,greys,guesslist]
     guessCount = 0
     previousGuesses = []
 
     while correct != True:
-        if len(info[3]) < 50:
+        
+        print(len(info[3]))
+        if len(info[3]) < 20:
             guess = bestPossibleChoice(info[3])[0]
         else:
             guess = mostInfo(previousGuesses,info[3])
+        
+        
+        
         print(guess)
+        
         info = makeGuess(info[:3],target,guess)
         guessCount += 1
-
+        
         if guess == target:
             correct = True
             print(f"Took {guessCount} guesses to get {target}")
@@ -83,7 +92,7 @@ def attemptWord(target):
     
     
 def main():
-    attemptWord('crane')
+    attemptWord('balls')
             
     
     
