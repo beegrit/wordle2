@@ -118,6 +118,7 @@ def first1000Avg():
 def main():
     first1000Avg()
     #attemptWord('dimes',debug=True)
+
             
     
     

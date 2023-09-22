@@ -17,6 +17,7 @@ def findCommonLetters(guessable):
     return mostCommonLettersBySpace
 
 
+
 def wordScore(word,commonLetters,repeatLetterPenalty):
     score = 1
     
@@ -54,6 +55,7 @@ def bestPossibleChoice(possible,commonLetters=findCommonLetters(guesslist),repea
     bestGuesses = sorted(wordScores.items(),key=lambda x:x[1])
     
         
+
     
     
     
@@ -73,6 +75,7 @@ def mostInfo(alreadyGuessed,possible):
                 
     if len(noGreyGuess)>0:
         return bestPossibleChoice(noGreyGuess,findCommonLetters(possible),repeatLetterPenalty=4)[0]
+
     else:
         return bestPossibleChoice(possible,findCommonLetters(possible))[0]
 
