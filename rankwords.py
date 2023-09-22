@@ -17,43 +17,45 @@ def findCommonLetters(guessable):
     return mostCommonLettersBySpace
 
 
-def wordScore(word,commonLetters,possible):
+
+def wordScore(word,commonLetters,repeatLetterPenalty):
     score = 1
-    letter_ratio = 100
-    if len(possible)<30:
-        possible_letters_repeat = "".join(possible)
-        possible_letters = set(possible_letters_repeat)
-        letter_ratio = len(possible)/len(possible_letters)
     
-    helpful_letters = []
-    if letter_ratio <= .7:
-        commonLetters = findCommonLetters(guesslist)
-        possible = guesslist
-        for letter in possible_letters:
-            if [*possible_letters_repeat].count(letter) <= 2:
-                helpful_letters.append(letter)
     
     for i,let in enumerate(word):
         if let in commonLetters[i]:
-            if let not in helpful_letters:
-                score *= (commonLetters[i].index(let)+1)
-            else:
-                score *= .5
+            score *= (commonLetters[i].index(let)+1)
         else: 
-            if len(helpful_letters) > 0:
-                score*=2
-            else:
-                score *= 10
-    score *= 4**(5-len(set(word)))
+            score *= 100
+    score *= repeatLetterPenalty**(5-len(set(word)))
     return score
 
 
-def bestPossibleChoice(possible,commonLetters=findCommonLetters(guesslist)):
+def bestPossibleChoice(possible,commonLetters=findCommonLetters(guesslist),repeatLetterPenalty=2):
     wordScores = {}
+    
+    # letter_ratio = 1
+    # if 10<len(possible)<30:
+    #     possible_letters_repeat = "".join(possible)
+    #     possible_letters = set(possible_letters_repeat)
+    #     letter_ratio = len(possible)/len(possible_letters)
+    
+    # helpful_letters = []
+    # if letter_ratio <= .7:
+    #     commonLetters = findCommonLetters(guesslist)
+    #     possible = guesslist
+    #     for letter in possible_letters:
+    #         if [*possible_letters_repeat].count(letter) <= 2:
+    #             helpful_letters.append(letter)
+    
+    
+    
     for choice in possible:
-        wordScores[choice] = wordScore(choice,commonLetters,possible)
+        wordScores[choice] = wordScore(choice,commonLetters,repeatLetterPenalty)
     bestGuesses = sorted(wordScores.items(),key=lambda x:x[1])
     
+        
+
     
     
     
@@ -68,9 +70,12 @@ def mostInfo(alreadyGuessed,possible):
         if any(x in lettersGuessed for x in word):
             continue
         else:
-            noGreyGuess.append(word)
+            if len(set(word)) == 5:
+                noGreyGuess.append(word)
+                
     if len(noGreyGuess)>0:
-        return bestPossibleChoice(noGreyGuess,findCommonLetters(possible))[0]
+        return bestPossibleChoice(noGreyGuess,findCommonLetters(possible),repeatLetterPenalty=4)[0]
+
     else:
         return bestPossibleChoice(possible,findCommonLetters(possible))[0]
 

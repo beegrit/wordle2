@@ -98,19 +98,27 @@ def attemptWord(target,debug=False):
     
 def first1000Avg():
     totalGuesses = 0
+    wordGuesses = {}
     for i,word in enumerate(guesslist[:1000]):
         guessCount = attemptWord(word)
+        wordGuesses[word] = guessCount
         totalGuesses+=guessCount
         print(f'{word} took {guessCount} guesses --- Avg: {round(totalGuesses/(i+1),2)}')
         
-        #first avg 5.57 - 9-20-23 11:40pm
-        #second avg 4.37 - 9-21-23 12:40am
-        #third avg 4.15 - 9-21-23 12:55am
-        #fourth avg 4.05 - 9-21-23 1:32am
-    
+        #1st avg 5.57 - 9-20-23 11:40pm - 1000
+        #2nd avg 4.37 - 9-21-23 12:40am - 1000
+        #3rd avg 4.15 - 9-21-23 12:55am - 1000
+        #4th avg 4.05 - 9-21-23 1:32am - 1000
+        #5th avg 4.03 - 9-21-23 10:00pm - 1000
+        #6th avg 3.91 - 9-21-23 10:20pm - 1000
+        #7th avg 3.87 - 9-21-23 10:38pm - 1000
+        #8th avg 3.86 - 9-21-23 10:45pm - 1000
+        
+    print(sorted(wordGuesses.items(), key=lambda x:x[1],reverse=True))
 def main():
-    #first1000Avg()
-    attemptWord('rares',debug=True)
+    first1000Avg()
+    #attemptWord('dimes',debug=True)
+
             
     
     
